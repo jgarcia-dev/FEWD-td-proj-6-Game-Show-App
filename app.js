@@ -2,7 +2,7 @@ const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
 const startButton = document.querySelector('.btn__reset');
 const missed = 0;
-const phrases = ["Why so serious", "Hasta la vista baby", "May the force be with you", "Hulk smash", "Just keep swimming"];
+const phrases = ["why so serious", "hasta la vista baby", "may the force be with you", "hulk smash", "just keep swimming"];
 
 
 // return a random phrase from an array
@@ -28,7 +28,16 @@ const addPhraseToDisplay = arr => {
 
 // check if a letter is in the phrase
 const checkLetter = button => {
-
+    const checkLetter = phrase.firstElementChild.children;
+    let match = null;
+    for (let i = 0; i < checkLetter.length; i += 1) {
+        li = checkLetter[i];
+        if (button.textContent === li.textContent) {
+            li.classList.add('show');
+            match = button.textContent;
+        }
+    }
+    return match;
 }
 
 // check if the game has been won or lost
@@ -44,8 +53,12 @@ startButton.addEventListener('click', () => {
 
 // listen for the onscreen keyboard to be clicked
 qwerty.addEventListener('click', e => {
-    
-    
+    const element = e.target; 
+    if (element.tagName === 'BUTTON') {
+        element.className = 'chosen';
+        element.disabled = 'true';
+        const letterFound = checkLetter(element);
+    }
 });
 
 
