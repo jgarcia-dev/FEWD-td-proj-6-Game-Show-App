@@ -1,7 +1,7 @@
 const qwerty = document.getElementById('qwerty');
 const phrase = document.getElementById('phrase');
 const startButton = document.querySelector('.btn__reset');
-const missed = 0;
+let missed = 0;
 const phrases = ["why so serious", "hasta la vista baby", "may the force be with you", "hulk smash", "just keep swimming"];
 
 
@@ -42,7 +42,20 @@ const checkLetter = button => {
 
 // check if the game has been won or lost
 const checkWin = () => {
-
+    const correctLetters = phrase.firstElementChild.getElementsByClassName('show');
+    const letters = phrase.firstElementChild.getElementsByClassName('letter');
+    const overlay = document.getElementById('overlay');
+    if (correctLetters.length === letters.length) {
+        overlay.classList.remove('start');
+        overlay.classList.add('win');
+        overlay.firstElementChild.textContent = "You Won!"
+        overlay.style.display = 'flex';
+    } else if (missed === 5) {
+        overlay.classList.remove('start');
+        overlay.classList.add('lose');
+        overlay.firstElementChild.textContent = "Sorry you lose"
+        overlay.style.display = 'flex';
+    }
 }
 
 // listen for the start game button to be pressed
@@ -54,10 +67,19 @@ startButton.addEventListener('click', () => {
 // listen for the onscreen keyboard to be clicked
 qwerty.addEventListener('click', e => {
     const element = e.target; 
+    scoreboardOL = document.getElementById('scoreboard').firstElementChild;
+    const hearts = scoreboardOL.children;
     if (element.tagName === 'BUTTON') {
         element.className = 'chosen';
         element.disabled = 'true';
         const letterFound = checkLetter(element);
+        if (letterFound === null) {
+            //li = scoreboardOL.firstElementChild;
+            //scoreboardOL.removeChild(li);
+            hearts[missed].firstElementChild.src = 'images/lostHeart.png';
+            missed += 1;
+        }
+        checkWin();
     }
 });
 
