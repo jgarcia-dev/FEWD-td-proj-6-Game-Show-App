@@ -1,9 +1,9 @@
+const overlay = document.getElementById('overlay');
 const qwerty = document.getElementById('qwerty');
-const phrase = document.getElementById('phrase');
+const phraseUL = document.getElementById('phrase').firstElementChild;
 const startButton = document.querySelector('.btn__reset');
 let missed = 0;
 const phrases = ["why so serious", "hasta la vista baby", "may the force be with you", "hulk smash", "just keep swimming"];
-
 
 // return a random phrase from an array
 const getRandomPhraseAsArray = arr => {
@@ -11,27 +11,27 @@ const getRandomPhraseAsArray = arr => {
     return phrases[randIndex];
 }
 
-// adds the letters of a string to the display
+// adds the allLetters of a string to the display
 const addPhraseToDisplay = arr => {
     for (let i = 0; i < arr.length; i += 1) {
-        const char = arr[i];
-        li = document.createElement('li');
-        li.textContent = char;
-        if (char != ' ') {
+        const currChar = arr[i];
+        const li = document.createElement('li');
+        li.textContent = currChar;
+        if (currChar != ' ') {
             li.className = 'letter';
-        } else if (char === ' ') {
+        } else if (currChar === ' ') {
             li.className = 'space';
         }
-        phrase.firstElementChild.appendChild(li);
+        phraseUL.appendChild(li);
     }
 }
 
 // check if a letter is in the phrase
 const checkLetter = button => {
-    const checkLetter = phrase.firstElementChild.children;
+    const letterLIs = phraseUL.children;
     let match = null;
-    for (let i = 0; i < checkLetter.length; i += 1) {
-        li = checkLetter[i];
+    for (let i = 0; i < letterLIs.length; i += 1) {
+        const li = letterLIs[i];
         if (button.textContent === li.textContent) {
             li.classList.add('show');
             match = button.textContent;
@@ -42,10 +42,9 @@ const checkLetter = button => {
 
 // check if the game has been won or lost
 const checkWin = () => {
-    const correctLetters = phrase.firstElementChild.getElementsByClassName('show');
-    const letters = phrase.firstElementChild.getElementsByClassName('letter');
-    const overlay = document.getElementById('overlay');
-    if (correctLetters.length === letters.length) {
+    const shownLetters = phraseUL.getElementsByClassName('show');
+    const allLetters = phraseUL.getElementsByClassName('letter');
+    if (shownLetters.length === allLetters.length) {
         overlay.classList.remove('start');
         overlay.classList.add('win');
         overlay.firstElementChild.textContent = "You Won!"
@@ -53,14 +52,13 @@ const checkWin = () => {
     } else if (missed === 5) {
         overlay.classList.remove('start');
         overlay.classList.add('lose');
-        overlay.firstElementChild.textContent = "Sorry you lose"
+        overlay.firstElementChild.textContent = "Sorry, you lose"
         overlay.style.display = 'flex';
     }
 }
 
 // listen for the start game button to be pressed
 startButton.addEventListener('click', () => {
-    const overlay = document.getElementById('overlay');
     overlay.style.display = 'none';
 });
 
@@ -74,8 +72,6 @@ qwerty.addEventListener('click', e => {
         element.disabled = 'true';
         const letterFound = checkLetter(element);
         if (letterFound === null) {
-            //li = scoreboardOL.firstElementChild;
-            //scoreboardOL.removeChild(li);
             hearts[missed].firstElementChild.src = 'images/lostHeart.png';
             missed += 1;
         }
