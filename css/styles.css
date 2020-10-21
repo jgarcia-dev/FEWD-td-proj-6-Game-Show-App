@@ -87,6 +87,8 @@ button {
   color: transparent;
   background: var(--color-neutral-light);
   border-radius: 5px;
+  -webkit-transition: var(--transition);
+  -o-transition: var(--transition);
 }
 
 .space {
@@ -96,15 +98,7 @@ button {
 .show {
   color: #FFF;
   background-color: #76CE82;
-  animation-name: grow-shrink;
-  animation-duration: 300ms;
-  animation-timing-function: ease;
-}
-
-@keyframes grow-shrink {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }  
+  transform: rotate(360deg);
 }
 
 /* Keyboard */
