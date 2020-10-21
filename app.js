@@ -3,8 +3,8 @@ const qwerty = document.getElementById('qwerty');
 const phraseUL = document.getElementById('phrase').firstElementChild;
 const startButton = document.querySelector('.btn__reset');
 let missed = 0;
-const phrases = ["why so serious", "hasta la vista baby", "may the force be with you", "hulk smash", "just keep swimming"];
-
+//const phrases = ["why so serious", "hasta la vista baby", "may the force be with you", "hulk smash", "just keep swimming"];
+const phrases = ["test"];
 // return a random phrase from an array
 const getRandomPhraseAsArray = arr => {
     const randIndex = Math.floor( Math.random() * arr.length );
@@ -45,14 +45,12 @@ const checkWin = () => {
     const shownLetters = phraseUL.getElementsByClassName('show');
     const allLetters = phraseUL.getElementsByClassName('letter');
     if (shownLetters.length === allLetters.length) {
-        overlay.classList.remove('start');
-        overlay.classList.add('win');
+        overlay.className = 'win';
         overlay.firstElementChild.textContent = "You Won!"
         overlay.style.display = 'flex';
         startButton.textContent = 'Reset Game';
     } else if (missed === 5) {
-        overlay.classList.remove('start');
-        overlay.classList.add('lose');
+        overlay.className = 'lose';
         overlay.firstElementChild.textContent = "Sorry, you lose"
         overlay.style.display = 'flex';
         startButton.textContent = 'Reset Game';
@@ -88,33 +86,34 @@ qwerty.addEventListener('click', e => {
 // resets the current game
 const resetGame = () => {
     const pressedButtons = qwerty.querySelectorAll('.chosen');
+
+    overlay.className ='start';
+    overlay.style.display = 'none'
+    missed = 0;
+
     // Remove phrase letters
     while (phraseUL.hasChildNodes()) {
         phraseUL.removeChild(phraseUL.lastChild);
     }
+
     // Add new phrase
     const newPhraseArray = getRandomPhraseAsArray(phrases);
     addPhraseToDisplay(newPhraseArray);
+
     // Reset qwerty buttons
     for (let i = 0; i < pressedButtons.length; i += 1) {
         pressedButtons[i].disabled = false;
         pressedButtons[i].className = "";
     }
+
     // Reset hearts
     scoreboardOL = document.getElementById('scoreboard').firstElementChild;
     const hearts = scoreboardOL.children;
     for (let i = 0; i < hearts.length; i += 1) {
         hearts[i].firstElementChild.src = 'images/liveHeart.png';
     }
-
-    missed = 0;
-    overlay.style.display = 'none'
 }
 
 
 const phraseArray = getRandomPhraseAsArray(phrases);
 addPhraseToDisplay(phraseArray);
-
-
-
-
